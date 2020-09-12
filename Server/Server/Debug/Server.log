@@ -1,0 +1,43 @@
+﻿  Camera.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\camera.cpp(27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\camera.cpp(28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\camera.cpp(49): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\camera.cpp(51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Collision.cpp
+  debug.cpp
+  DSutil.cpp
+  dxgraphics.cpp
+  dxinput.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  dxsound.cpp
+  dxutil.cpp
+  Map.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  ServerGame.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\servergame.h(18): warning C4244: 'initializing': conversion from 'float' to 'unsigned int', possible loss of data
+  Source.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\servergame.h(18): warning C4244: 'initializing': conversion from 'float' to 'unsigned int', possible loss of data
+  Sprite.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\sprite.cpp(149): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\sprite.cpp(158): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\sprite.cpp(161): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\sprite.cpp(164): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\sprite.cpp(170): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+  Tank.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\tank.cpp(16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\learning\hk7\game_nangcao\tanknangcao\server\server\tank.cpp(17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Tiles.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  TimeClockFunc.cpp
+  tinystr.cpp
+  tinyxml.cpp
+  tinyxmlerror.cpp
+  tinyxmlparser.cpp
+  VClock.cpp
+  Generating Code...
+  Server.vcxproj -> D:\Learning\HK7\Game_NangCao\TankNangCao\Server\Debug\Server.exe
