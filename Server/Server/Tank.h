@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Object.h"
 #include "Tiles.h"
+#include "Map.h"
 
 enum FACING
 {
@@ -21,12 +22,14 @@ protected:
 	int countDownFrameDelay = frameDelay;
 	Sprite spriteSheet;
 	Tiles spriteSheetInfo;
+	MapElement collisionDetect[3] = { BRICK, STONE, WATER };
 public:
 	Tank();
 	Tank(string path, int width, int height, float x, float y, FACING direction, int spriteElemNumber);
 	~Tank();
 
-	void Update();
+	void UpdateVelocity();
+	void Update(Map mapInfo);
 	void Render(Camera camera);
 
 private:

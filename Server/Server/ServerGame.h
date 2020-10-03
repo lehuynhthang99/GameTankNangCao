@@ -19,6 +19,7 @@ const unsigned int	TICKS_PER_SECOND = 60.0f;
 const float	SECONDS_PER_TICK = 1.0f / float(TICKS_PER_SECOND);
 const int MAX_PLAYER = 1;
 
+
 class ServerGame
 {
 protected:

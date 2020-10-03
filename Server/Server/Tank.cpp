@@ -25,34 +25,55 @@ Tank::~Tank()
 {
 }
 
-void Tank::Update()
+
+void Tank::UpdateVelocity()
 {
+	objInfo.velocity = D3DXVECTOR2(0, 0);
 	if (Key_Down(DIK_UP))
 	{
-		objInfo.botLeftPosition.y += speed;
+		//objInfo.botLeftPosition.y += speed * collisionTime;
+		objInfo.velocity.y = speed;
 		objInfo.direction.y = 1;
 		curFacing = UP;
 	}
 	else if (Key_Down(DIK_DOWN))
 	{
-		objInfo.botLeftPosition.y -= speed;
+		//objInfo.botLeftPosition.y -= speed * collisionTime;
+		objInfo.velocity.y = -speed;
 		objInfo.direction.y = -1;
 		curFacing = DOWN;
 	}
 	else if (Key_Down(DIK_LEFT))
 	{
-		objInfo.botLeftPosition.x -= speed;
+		//objInfo.botLeftPosition.x -= speed * collisionTime;
+		objInfo.velocity.x = -speed;
 		objInfo.direction.x = -1;
 		curFacing = LEFT;
 	}
 	else if (Key_Down(DIK_RIGHT))
 	{
-		objInfo.botLeftPosition.x += speed;
+		//objInfo.botLeftPosition.x += speed * collisionTime;
+		objInfo.velocity.x = speed;
 		objInfo.direction.x = 1;
 		curFacing = RIGHT;
 	}
 
-	UpdateAnimation();
+	if (objInfo.velocity != D3DXVECTOR2(0, 0))
+		UpdateAnimation();
+
+}
+
+void Tank::Update(Map mapInfo)
+{
+	mapInfo.CollisionDetect(this, collisionDetect, 3);
+	if (abs(normalX) > 0.0001f)
+		objInfo.velocity.x = 0;
+	if (abs(normalY) > 0.0001f)
+		objInfo.velocity.y = 0;
+	objInfo.botLeftPosition += objInfo.velocity *collisionTime;
+
+	collisionTime = 1;
+	normalX = normalY = 0;
 }
 
 void Tank::Render(Camera camera)

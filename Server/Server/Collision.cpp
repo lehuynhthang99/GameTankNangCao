@@ -1,7 +1,12 @@
 #include "Collision.h"
 
-float SweptAABB(Box box1, Box box2, float &normal_x, float &normal_y)
+float SweptAABB(Box mainBox, Box box2, float &normal_x, float &normal_y)
 {
+	Box box1 = mainBox;
+	box1.botLeftPosition += D3DXVECTOR2(1, 1);
+	box1.width -= 1;
+	box1.height -= 1;
+
 	box1.velocity.x -= box2.velocity.x;
 	box1.velocity.y -= box2.velocity.y;
 	float xInvEntry, yInvEntry;
@@ -21,13 +26,13 @@ float SweptAABB(Box box1, Box box2, float &normal_x, float &normal_y)
 
 	if (box1.velocity.y > 0)
 	{	
-		yInvEntry = box2.botLeftPosition.y - box2.height - box1.botLeftPosition.y;
-		yInvExit = box2.botLeftPosition.y - (box1.botLeftPosition.y - box1.height);
+		yInvEntry = box2.botLeftPosition.y - (box1.botLeftPosition.y + box1.height);
+		yInvExit = (box2.botLeftPosition.y + box2.height) - box1.botLeftPosition.y;
 	}
 	else
 	{
-		yInvEntry = box2.botLeftPosition.y - (box1.botLeftPosition.y - box1.height);
-		yInvExit = box2.botLeftPosition.y - box2.height - box1.botLeftPosition.y;
+		yInvEntry = (box2.botLeftPosition.y + box2.height) - box1.botLeftPosition.y;
+		yInvExit = box2.botLeftPosition.y - (box1.botLeftPosition.y + box1.width);
 	}
 
 	//time of collision and leaving

@@ -38,8 +38,10 @@ void ServerGame::Game_Run()
 	virtualClock.setStartTickTime();
 
 	//Update
+	tank.UpdateVelocity();
+
 	Update();
-	tank.Update();
+	tank.Update(map);
 
 	//Render
 	//start render
