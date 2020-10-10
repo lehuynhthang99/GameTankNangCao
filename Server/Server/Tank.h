@@ -10,6 +10,17 @@ enum FACING
 {
 	UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3
 };
+class package
+{
+public:
+	package(int m, int n)
+	{
+		x = m;
+		y = n;
+	};
+	int x;
+	int y;
+};
 
 class Tank : public Object
 {
@@ -31,6 +42,15 @@ public:
 	void UpdateVelocity();
 	void Update(Map mapInfo);
 	void Render(Camera camera);
+	package *GetPackage();
+	void UsePackage(package *pak);
+	__int32 GetX();
+	__int32 GetY();
+	void GoUp();
+	void GoDown();
+	void GoLeft();
+	void GoRight();
+
 
 private:
 	void UpdateAnimation();

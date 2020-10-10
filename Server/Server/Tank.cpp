@@ -65,12 +65,17 @@ void Tank::UpdateVelocity()
 
 void Tank::Update(Map mapInfo)
 {
+	this;
 	mapInfo.CollisionDetect(this, collisionDetect, 3);
 	if (abs(normalX) > 0.0001f)
 		objInfo.velocity.x = 0;
 	if (abs(normalY) > 0.0001f)
 		objInfo.velocity.y = 0;
 	objInfo.botLeftPosition += objInfo.velocity *collisionTime;
+	if (objInfo.velocity.x != 0)
+	{
+		auto err = "a";
+	}
 
 	collisionTime = 1;
 	normalX = normalY = 0;
@@ -85,8 +90,70 @@ void Tank::Render(Camera camera)
 	spriteSheet.Render(camera, spriteSheetInfo.getRectLocation(curSprite), objInfo, 1);
 }
 
+package* Tank::GetPackage()
+{
+	package* out = new package(objInfo.botLeftPosition.x, objInfo.botLeftPosition.y);
+	return out;
+}
+
+void Tank::UsePackage(package * pak)
+{
+	objInfo.botLeftPosition.x = pak->x;
+	objInfo.botLeftPosition.y = pak->y;
+}
+
+__int32 Tank::GetX()
+{
+	return objInfo.botLeftPosition.x;
+}
+
+__int32 Tank::GetY()
+{
+	return objInfo.botLeftPosition.y;
+}
+
+void Tank::GoUp()
+{
+	//objInfo.botLeftPosition.y += speed * collisionTime;
+	objInfo.velocity.y = speed;
+	objInfo.direction.y = 1;
+	curFacing = UP;
+
+	if (objInfo.velocity != D3DXVECTOR2(0, 0))
+		UpdateAnimation();
+}
+void Tank::GoDown()
+{
+	objInfo.velocity.y = -speed;
+	objInfo.direction.y = -1;
+	curFacing = DOWN;
+
+	if (objInfo.velocity != D3DXVECTOR2(0, 0))
+		UpdateAnimation();
+}
+void Tank::GoLeft()
+{
+	//objInfo.botLeftPosition.x -= speed * collisionTime;
+	objInfo.velocity.x = -speed;
+	objInfo.direction.x = -1;
+	curFacing = LEFT;
+
+	if (objInfo.velocity != D3DXVECTOR2(0, 0))
+		UpdateAnimation();
+}
+void Tank::GoRight()
+{
+	objInfo.velocity.x = speed;
+	objInfo.direction.x = 1;
+	curFacing = RIGHT;
+
+	if (objInfo.velocity != D3DXVECTOR2(0, 0))
+		UpdateAnimation();
+}
+
 void Tank::UpdateAnimation()
 {
+	this;
 	startingFrame = curFacing * 2;
 	countDownFrameDelay--;
 	if (countDownFrameDelay <= 0)
