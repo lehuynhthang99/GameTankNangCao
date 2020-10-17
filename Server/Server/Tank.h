@@ -5,6 +5,15 @@
 #include "Object.h"
 #include "Tiles.h"
 #include "Map.h"
+#include <vector>
+
+struct snapshot
+{
+	int timestamp;
+	char input;
+	float x;
+	float y;
+};
 
 enum FACING
 {
@@ -46,10 +55,14 @@ public:
 	void UsePackage(package *pak);
 	__int32 GetX();
 	__int32 GetY();
+	D3DXVECTOR2 GetVelocity();
 	void GoUp();
 	void GoDown();
 	void GoLeft();
 	void GoRight();
+	vector<snapshot> history;
+	void CalculateSnapshot(char input, int timestamp, int position);
+	void SaveSnapShot(char input, int timestamp);
 
 
 private:

@@ -1,5 +1,6 @@
 #include "Tank.h"
-
+#include <chrono>
+#include <ctime> 
 
 
 Tank::Tank()
@@ -112,6 +113,11 @@ __int32 Tank::GetY()
 	return objInfo.botLeftPosition.y;
 }
 
+D3DXVECTOR2 Tank::GetVelocity()
+{
+	return objInfo.velocity;
+}
+
 void Tank::GoUp()
 {
 	//objInfo.botLeftPosition.y += speed * collisionTime;
@@ -149,6 +155,58 @@ void Tank::GoRight()
 
 	if (objInfo.velocity != D3DXVECTOR2(0, 0))
 		UpdateAnimation();
+}
+
+void Tank::CalculateSnapshot(char input, int timestamp, int position)
+{
+	auto end = std::chrono::system_clock::now();
+	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	auto timenow = static_cast<int>(end_time);
+	auto delay = timenow- timestamp;
+	float lagY = history[position].y;
+	float lagX = history[position].x;
+	switch (input)
+	{
+	case 'w':
+		lagY += GetVelocity().y * delay;
+		break;
+
+	case 'a':
+		lagX -= GetVelocity().x * delay;
+		break;
+
+	case 's':
+		lagY -= GetVelocity().y * delay;
+		break;
+
+	case 'd':
+		lagX += GetVelocity().x * delay;
+		break;
+	}
+	objInfo.botLeftPosition.x = lagX;
+	objInfo.botLeftPosition.y = lagY;
+}
+
+void Tank::SaveSnapShot(char input, int timestamp)
+{
+	snapshot snap;
+	snap.input = input;
+	snap.x = objInfo.botLeftPosition.x;
+	snap.y = objInfo.botLeftPosition.y;
+	snap.timestamp = timestamp;
+	if (history.size() < 1000)
+	{
+		history.push_back(snap);
+	}
+	else
+	{
+		for (int i = 0; i < history.size()-1; i++)
+		{
+			history[i] = history[i + 1];
+			history.pop_back();
+			history.push_back(snap);
+		}
+	}
 }
 
 void Tank::UpdateAnimation()

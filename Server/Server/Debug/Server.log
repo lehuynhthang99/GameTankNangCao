@@ -1,2 +1,12 @@
-﻿  Server.vcxproj -> C:\Users\Deruru\Documents\Visual Studio 2017\Projects\Client\GameTankNangCao\Server\Debug\Server.exe
+﻿  ServerGame.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.h(18): warning C4244: 'initializing': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(130): warning C4018: '<': signed/unsigned mismatch
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(130): warning C4552: '<': operator has no effect; expected operator with side-effect
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(145): warning C4244: '+=': conversion from 'FLOAT' to 'int', possible loss of data
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(150): warning C4244: '-=': conversion from 'FLOAT' to 'int', possible loss of data
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(155): warning C4244: '-=': conversion from 'FLOAT' to 'int', possible loss of data
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(160): warning C4244: '+=': conversion from 'FLOAT' to 'int', possible loss of data
+c:\users\deruru\documents\visual studio 2017\projects\client\gametanknangcao\server\server\servergame.cpp(218): warning C4715: 'ServerRun': not all control paths return a value
+  Server.vcxproj -> C:\Users\Deruru\Documents\Visual Studio 2017\Projects\Client\GameTankNangCao\Server\Debug\Server.exe
   Server.vcxproj -> C:\Users\Deruru\Documents\Visual Studio 2017\Projects\Client\GameTankNangCao\Server\Debug\Server.pdb (Partial PDB)

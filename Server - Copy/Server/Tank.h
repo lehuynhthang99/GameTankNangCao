@@ -47,7 +47,7 @@ public:
 	package *GetPackage();
 	void UsePackage(package *pak);
 	int SendPack(char command);
-	void ReceivPack();
+	int ReceivPack();
 
 private:
 	void UpdateAnimation();
