@@ -1,19 +1,19 @@
 #pragma once
 
+class Tank;
+
 #include <d3dx9.h>
 #include "Sprite.h"
 #include "Object.h"
 #include "Tiles.h"
 #include "Map.h"
-
-enum FACING
-{
-	UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3
-};
+#include "Bullet.h"
 
 class Tank : public Object
 {
 protected:
+	static unsigned int idInit;
+	static const string pathToResource;
 	FACING curFacing = UP;
 	float speed = 1.2f;
 	int curSprite = 0;
@@ -23,13 +23,15 @@ protected:
 	Sprite spriteSheet;
 	Tiles spriteSheetInfo;
 	MapElement collisionDetect[3] = { BRICK, STONE, WATER };
+	Bullet* bullet = NULL;
+
 public:
 	Tank();
-	Tank(string path, int width, int height, float x, float y, FACING direction, int spriteElemNumber);
+	Tank(int width, int height, float x, float y, FACING direction, int spriteElemNumber);
 	~Tank();
 
-	void UpdateVelocity();
-	void Update(Map mapInfo);
+	void UpdateInput();
+	void Update(Map* mapInfo);
 	void Render(Camera camera);
 
 private:
