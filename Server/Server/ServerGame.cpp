@@ -21,8 +21,8 @@ int ServerGame::Game_Init()
 	virtualClock.Start();
 	//ListObjectInGame* objList = ListObjectInGame::GetInstance();
 	numberOfTanks = 2;
-	tank[0] = Tank(13, 13, 0, 0, UP, 8);
-	tank[1] = Tank(13, 13, GAME_WIDTH-14, GAME_HEIGHT-14, UP, 8);
+	tank[0] = Tank(12, 12, 0, 0, UP, 8);
+	tank[1] = Tank(12, 12, GAME_WIDTH-14, GAME_HEIGHT-14, UP, 8);
 	camera = Camera(GAME_WIDTH);
 	map = Map(8, 8, 7);
 	return 1;
@@ -48,6 +48,9 @@ void ServerGame::Game_Run()
 	tank[0].Update(&map, tank, numberOfTanks);
 	tank[1].Update(&map, tank, numberOfTanks);
 
+	tank[0].UpdateVelocity();
+	tank[1].UpdateVelocity();
+
 	//Render
 	//start render
 	if (d3ddev == NULL)
@@ -65,6 +68,7 @@ void ServerGame::Game_Run()
 		tank[0].Render(camera);
 		tank[1].Render(camera);
 		map.Render(camera);
+
 
 		//end
 

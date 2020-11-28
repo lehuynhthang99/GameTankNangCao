@@ -37,7 +37,8 @@ void Tank::UpdateInput()
 {
 	objInfo.velocity = D3DXVECTOR2(0, 0);
 	FACING prevFace = curFacing;
-	if (Key_Down(DIK_UP))
+	if (Key_Down(DIK_UP) && id == 0 ||
+		Key_Down(DIK_W) && id == 1)
 	{
 		//objInfo.botLeftPosition.y += speed * collisionTime;
 		objInfo.velocity.y = speed;
@@ -45,7 +46,8 @@ void Tank::UpdateInput()
 		objInfo.direction.y = 1;
 		curFacing = UP;
 	}
-	else if (Key_Down(DIK_DOWN))
+	else if (Key_Down(DIK_DOWN) && id == 0 ||
+		Key_Down(DIK_S) && id == 1)
 	{
 		//objInfo.botLeftPosition.y -= speed * collisionTime;
 		objInfo.velocity.y = -speed;
@@ -53,7 +55,8 @@ void Tank::UpdateInput()
 		objInfo.direction.y = -1;
 		curFacing = DOWN;
 	}
-	else if (Key_Down(DIK_LEFT))
+	else if (Key_Down(DIK_LEFT) && id == 0 ||
+		Key_Down(DIK_A) && id == 1)
 	{
 		//objInfo.botLeftPosition.x -= speed * collisionTime;
 		objInfo.velocity.x = -speed;
@@ -61,7 +64,8 @@ void Tank::UpdateInput()
 		objInfo.direction.y = 0;
 		curFacing = LEFT;
 	}
-	else if (Key_Down(DIK_RIGHT))
+	else if (Key_Down(DIK_RIGHT) && id == 0 ||
+		Key_Down(DIK_D) && id == 1)
 	{
 		//objInfo.botLeftPosition.x += speed * collisionTime;
 		objInfo.velocity.x = speed;
@@ -88,14 +92,8 @@ void Tank::UpdateInput()
 void Tank::Update(Map* mapInfo, Tank* tanks, int numberOfTanks)
 {
 	mapInfo->CollisionDetect(this, collisionDetect, 3);
-	if (abs(normalX) > 0.0001f)
-		objInfo.velocity.x = 0;
-	if (abs(normalY) > 0.0001f)
-		objInfo.velocity.y = 0;
-	objInfo.botLeftPosition += objInfo.velocity *collisionTime;
-
-	collisionTime = 1;
-	normalX = normalY = 0;
+	TankCollideDetect(tanks, numberOfTanks);
+	
 
 	if (bullet != NULL)
 	{
@@ -134,11 +132,32 @@ void Tank::TankCollideDetect(Tank * tanks, int numberOfTanks)
 {
 	for (int i = 0; i < numberOfTanks; i++)
 	{
-		if (tanks[i].id == id)
-			continue;
+		/*if (tanks[i].id == id)
+			continue;*/
 		float normalX, normalY;
-		float collisionTime = SweptAABB(tanks[i].objInfo, this->objInfo, normalX, normalY);
+		float collisionTime = SweptAABB(this->objInfo, tanks[i].objInfo, normalX, normalY);
 		if (collisionTime < 0.0f)
 			collisionTime = 0;
+		if (collisionTime < this->collisionTime && (normalX != 0 || normalY != 0))
+		{
+			this->collisionTime = collisionTime;
+			this->normalX = normalX;
+			this->normalY = normalY;
+		}
+
 	}
+}
+
+void Tank::UpdateVelocity()
+{
+	if (abs(normalX) > 0.0001f)
+		objInfo.velocity.x = 0;
+	if (abs(normalY) > 0.0001f)
+		objInfo.velocity.y = 0;
+	objInfo.botLeftPosition += objInfo.velocity *collisionTime;
+
+	collisionTime = 1;
+	normalX = normalY = 0;
+
+	
 }

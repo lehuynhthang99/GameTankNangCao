@@ -35,8 +35,8 @@ public:
 	void UpdateInput();
 	void Update(Map* mapInfo, Tank* tanks, int numberOfTanks);
 	void Render(Camera camera);
-
+	void TankCollideDetect(Tank* tanks, int numberOfTanks);
+	void UpdateVelocity();
 private:
 	void UpdateAnimation();
-	void TankCollideDetect(Tank* tanks, int numberOfTanks);
 };	
