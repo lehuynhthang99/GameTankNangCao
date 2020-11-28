@@ -25,15 +25,18 @@ protected:
 	MapElement collisionDetect[3] = { BRICK, STONE, WATER };
 	Bullet* bullet = NULL;
 
+	
+
 public:
 	Tank();
 	Tank(int width, int height, float x, float y, FACING direction, int spriteElemNumber);
 	~Tank();
 
 	void UpdateInput();
-	void Update(Map* mapInfo);
+	void Update(Map* mapInfo, Tank* tanks, int numberOfTanks);
 	void Render(Camera camera);
 
 private:
 	void UpdateAnimation();
+	void TankCollideDetect(Tank* tanks, int numberOfTanks);
 };	

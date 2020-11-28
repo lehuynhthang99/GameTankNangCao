@@ -19,8 +19,10 @@ ServerGame::~ServerGame()
 int ServerGame::Game_Init()
 {
 	virtualClock.Start();
-	ListObjectInGame* objList = ListObjectInGame::GetInstance();
-	tank = Tank(13, 13, 0, 0, UP, 8);
+	//ListObjectInGame* objList = ListObjectInGame::GetInstance();
+	numberOfTanks = 2;
+	tank[0] = Tank(13, 13, 0, 0, UP, 8);
+	tank[1] = Tank(13, 13, GAME_WIDTH-14, GAME_HEIGHT-14, UP, 8);
 	camera = Camera(GAME_WIDTH);
 	map = Map(8, 8, 7);
 	return 1;
@@ -39,10 +41,12 @@ void ServerGame::Game_Run()
 	virtualClock.setStartTickTime();
 
 	//Update
-	tank.UpdateInput();
+	tank[0].UpdateInput();
+	tank[1].UpdateInput();
 
 	Update();
-	tank.Update(&map);
+	tank[0].Update(&map, tank, numberOfTanks);
+	tank[1].Update(&map, tank, numberOfTanks);
 
 	//Render
 	//start render
@@ -58,7 +62,8 @@ void ServerGame::Game_Run()
 
 		//begin
 
-		tank.Render(camera);
+		tank[0].Render(camera);
+		tank[1].Render(camera);
 		map.Render(camera);
 
 		//end

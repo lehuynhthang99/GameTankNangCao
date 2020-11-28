@@ -1,7 +1,7 @@
 #include "Tank.h"
 
 unsigned int Tank::idInit = 0;
-const string Tank::pathToResource = "Resources/Tank/Tank1/Tank1";
+const string Tank::pathToResource = "Resources/Tank";
 
 Tank::Tank()
 {
@@ -11,9 +11,11 @@ Tank::Tank()
 Tank::Tank(int width, int height, float x, float y, FACING direction, int spriteElemNumber)
 {
 	id = idInit;
+	string tankName = "//Tank" + to_string(id + 1);
 	idInit = (idInit + 1) % TANK_MAX_RANGE;
-	spriteSheet = Sprite(pathToResource + ".png");
-	spriteSheetInfo = Tiles(pathToResource + ".xml", spriteElemNumber);
+	string path = pathToResource + tankName + tankName;
+	spriteSheet = Sprite(path + ".png");
+	spriteSheetInfo = Tiles(path + ".xml", spriteElemNumber);
 	objInfo.botLeftPosition = D3DXVECTOR2(x, y);
 	objInfo.direction = D3DXVECTOR2(1, 1);
 	objInfo.center = D3DXVECTOR2(width / 2.0f, height / 2.0f);
@@ -72,7 +74,7 @@ void Tank::UpdateInput()
 	{
 		D3DXVECTOR2 firingPos = objInfo.GetCenterPos();
 		//firingPos += objInfo.direction * (objInfo.width / 2 - 7);
-		bullet = new Bullet(firingPos.x, firingPos.y, curFacing);
+		bullet = new Bullet(id, firingPos.x, firingPos.y, curFacing);
 	}
 
 	if (prevFace != curFacing)
@@ -83,7 +85,7 @@ void Tank::UpdateInput()
 
 }
 
-void Tank::Update(Map* mapInfo)
+void Tank::Update(Map* mapInfo, Tank* tanks, int numberOfTanks)
 {
 	mapInfo->CollisionDetect(this, collisionDetect, 3);
 	if (abs(normalX) > 0.0001f)
@@ -125,5 +127,18 @@ void Tank::UpdateAnimation()
 	{
 		countDownFrameDelay = frameDelay;
 		curSprite = curSprite % 2 + startingFrame;
+	}
+}
+
+void Tank::TankCollideDetect(Tank * tanks, int numberOfTanks)
+{
+	for (int i = 0; i < numberOfTanks; i++)
+	{
+		if (tanks[i].id == id)
+			continue;
+		float normalX, normalY;
+		float collisionTime = SweptAABB(tanks[i].objInfo, this->objInfo, normalX, normalY);
+		if (collisionTime < 0.0f)
+			collisionTime = 0;
 	}
 }
