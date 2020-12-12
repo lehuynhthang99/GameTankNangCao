@@ -41,15 +41,41 @@ void ServerGame::Game_Run()
 	virtualClock.setStartTickTime();
 
 	//Update
-	tank[0].UpdateInput();
-	tank[1].UpdateInput();
+	tank[0].Respawn();
+	tank[1].Respawn();
+
+	Bullet* tmp = tank[0].UpdateInput();
+	if (tmp != NULL)
+		bullets.push_back(tmp);
+	tmp = tank[1].UpdateInput();
+	if (tmp != NULL)
+		bullets.push_back(tmp);
 
 	Update();
 	tank[0].Update(&map, tank, numberOfTanks);
 	tank[1].Update(&map, tank, numberOfTanks);
 
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		tank[0].TankCollideBullet(bullets[i]);
+		tank[1].TankCollideBullet(bullets[i]);
+	}
+
+	tank[0].BulletReset();
+	tank[1].BulletReset();
+
+	for (int i = 0; i < bullets.size(); i++)
+		if (bullets[i]->isDestroy)
+		{
+			delete bullets[i];
+			bullets[i] = nullptr;
+			bullets.erase(bullets.begin() + i);
+		}
+
 	tank[0].UpdateVelocity();
 	tank[1].UpdateVelocity();
+
+	
 
 	//Render
 	//start render
@@ -77,6 +103,7 @@ void ServerGame::Game_Run()
 	}
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
+
 
 	//Sleep for FPS
 	float time_taken_s = virtualClock.getTimeSince_miliSec() / 1000.0f;

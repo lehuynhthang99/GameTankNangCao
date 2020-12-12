@@ -16,7 +16,10 @@ Tank::Tank(int width, int height, float x, float y, FACING direction, int sprite
 	string path = pathToResource + tankName + tankName;
 	spriteSheet = Sprite(path + ".png");
 	spriteSheetInfo = Tiles(path + ".xml", spriteElemNumber);
-	objInfo.botLeftPosition = D3DXVECTOR2(x, y);
+
+	respawnPos = D3DXVECTOR2(x, y);
+
+	objInfo.botLeftPosition = respawnPos;
 	objInfo.direction = D3DXVECTOR2(1, 1);
 	objInfo.center = D3DXVECTOR2(width / 2.0f, height / 2.0f);
 	objInfo.width = width;
@@ -33,7 +36,7 @@ Tank::~Tank()
 }
 
 
-void Tank::UpdateInput()
+Bullet* Tank::UpdateInput()
 {
 	objInfo.velocity = D3DXVECTOR2(0, 0);
 	FACING prevFace = curFacing;
@@ -74,11 +77,17 @@ void Tank::UpdateInput()
 		curFacing = RIGHT;
 	}
 
-	if (Key_Down(DIK_SPACE) && bullet == NULL)
+	bool isCreateBullet = false;
+	if (bullet == NULL)
 	{
-		D3DXVECTOR2 firingPos = objInfo.GetCenterPos();
-		//firingPos += objInfo.direction * (objInfo.width / 2 - 7);
-		bullet = new Bullet(id, firingPos.x, firingPos.y, curFacing);
+		if (Key_Down(DIK_SPACE) && id == 0 ||
+			Key_Down(DIK_LCONTROL) && id == 1)
+		{
+			isCreateBullet = true;
+			D3DXVECTOR2 firingPos = objInfo.GetCenterPos();
+			//firingPos += objInfo.direction * (objInfo.width / 2 - 7);
+			bullet = new Bullet(id, firingPos.x, firingPos.y, curFacing);
+		}
 	}
 
 	if (prevFace != curFacing)
@@ -87,6 +96,10 @@ void Tank::UpdateInput()
 	if (objInfo.velocity != D3DXVECTOR2(0, 0))
 		UpdateAnimation();
 
+	if (isCreateBullet)
+		return bullet;
+	return NULL;
+
 }
 
 void Tank::Update(Map* mapInfo, Tank* tanks, int numberOfTanks)
@@ -94,26 +107,32 @@ void Tank::Update(Map* mapInfo, Tank* tanks, int numberOfTanks)
 	mapInfo->CollisionDetect(this, collisionDetect, 3);
 	TankCollideDetect(tanks, numberOfTanks);
 	
-
+	
 	if (bullet != NULL)
 	{
-		bullet->UpdateBullet(mapInfo);
-		if (bullet->isDestroy)
-		{
-			delete bullet;
-			bullet = NULL;
-		}
+		if (!bullet->isDestroy)
+			bullet->UpdateBullet(mapInfo);
+		//if (bullet->isDestroy)
+		//{
+		//	//delete bullet;
+		//	bullet = nullptr;
+		//}
 	}
 }
 
+
+
 void Tank::Render(Camera camera)
 {
-	RECT rect;
-	rect.bottom = spriteSheet.GetHeight();
-	rect.right = spriteSheet.GetWidth();
-	rect.left = rect.top = 0;
-	spriteSheet.Render(camera, spriteSheetInfo.getRectLocation(curSprite), objInfo, 1);
-	if (bullet != NULL)
+	if (!isRespawn)
+	{
+		RECT rect;
+		rect.bottom = spriteSheet.GetHeight();
+		rect.right = spriteSheet.GetWidth();
+		rect.left = rect.top = 0;
+		spriteSheet.Render(camera, spriteSheetInfo.getRectLocation(curSprite), objInfo, 1);
+	}
+	if (bullet)
 		bullet->Render(camera);
 }
 
@@ -148,6 +167,21 @@ void Tank::TankCollideDetect(Tank * tanks, int numberOfTanks)
 	}
 }
 
+void Tank::TankCollideBullet(Bullet * bullet)
+{
+	if (isRespawn || bullet->isDestroy)
+		return;
+	float normalX, normalY;
+	float collisionTime = SweptAABB(this->objInfo, bullet->objInfo, normalX, normalY);
+	if (collisionTime < 0.0f)
+		collisionTime = 0;
+	if (collisionTime < this->collisionTime && (normalX != 0 || normalY != 0))
+	{
+		this->isRespawn = true;
+		bullet->isDestroy = true;
+	}
+}
+
 void Tank::UpdateVelocity()
 {
 	if (abs(normalX) > 0.0001f)
@@ -158,6 +192,18 @@ void Tank::UpdateVelocity()
 
 	collisionTime = 1;
 	normalX = normalY = 0;
+}
 
-	
+void Tank::BulletReset()
+{
+	if (bullet && bullet->isDestroy)
+		bullet = NULL;
+}
+
+void Tank::Respawn()
+{
+	if (!isRespawn)
+		return;
+	objInfo.botLeftPosition = respawnPos;
+	isRespawn = false;
 }

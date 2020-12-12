@@ -9,6 +9,8 @@ class Tank;
 #include "Map.h"
 #include "Bullet.h"
 
+
+
 class Tank : public Object
 {
 protected:
@@ -25,6 +27,8 @@ protected:
 	MapElement collisionDetect[3] = { BRICK, STONE, WATER };
 	Bullet* bullet = NULL;
 
+	D3DXVECTOR2 respawnPos;
+
 	
 
 public:
@@ -32,11 +36,14 @@ public:
 	Tank(int width, int height, float x, float y, FACING direction, int spriteElemNumber);
 	~Tank();
 
-	void UpdateInput();
+	Bullet* UpdateInput();
 	void Update(Map* mapInfo, Tank* tanks, int numberOfTanks);
 	void Render(Camera camera);
 	void TankCollideDetect(Tank* tanks, int numberOfTanks);
+	void TankCollideBullet(Bullet* bullet);
 	void UpdateVelocity();
+	void BulletReset();
+	void Respawn();
 private:
 	void UpdateAnimation();
 };	
